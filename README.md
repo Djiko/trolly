@@ -20,7 +20,7 @@ As a re-starting project, Trolly is suffering from various issues. A good roadma
   + **Openintents issue** : as is, the project will not compile because an **openintents** issue.
   + **\' issue** : this problem might be existing in other languages. In French, if you use an apostrophe in a product's name, the application will crash. 
 
-### Improvements
+### TODO: Improvements
   * UI -> implement a side menu
   * Add French translation. COntributions are welcome if you are willing to add your own language
   * Cleaning the cached product list is not that intuitive. There may be some improvements to do there. 
