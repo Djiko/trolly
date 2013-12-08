@@ -74,8 +74,9 @@ public class Trolly extends ListActivity {
 
 		private ContentResolver mContent;   
 		
-		public TrollyAdapter(Context context, int layout, Cursor c,
-				String[] from, int[] to) {
+		//TODO: move to public SimpleCursorAdapter (Context context, int layout, Cursor c, String[] from, int[] to, int flags)
+		public TrollyAdapter(Context context, int layout, Cursor c, String[] from, int[] to) 
+		{
 			super(context, layout, c, from, to);
 			mContent = context.getContentResolver();
 		}
@@ -85,6 +86,7 @@ public class Trolly extends ListActivity {
             if (getFilterQueryProvider() != null) {
                 return getFilterQueryProvider().runQuery(constraint);
             }
+            Locale currentLocale = Locale.getDefault();
 
             StringBuilder buffer = null;
             String[] args = null;
@@ -93,7 +95,7 @@ public class Trolly extends ListActivity {
                 buffer.append("UPPER(");
                 buffer.append(ShoppingList.ITEM);
                 buffer.append(") GLOB ?");
-                args = new String[] { "*" + constraint.toString().toUpperCase(Locale.getDefault()) + "*" };
+                args = new String[] { "*" + constraint.toString().toUpperCase(currentLocale) + "*" };
             }
 
             return mContent.query(ShoppingList.CONTENT_URI, PROJECTION,
@@ -175,7 +177,7 @@ public class Trolly extends ListActivity {
                 buffer.append("UPPER(");
                 buffer.append(ShoppingList.ITEM);
                 buffer.append(") GLOB ?");
-                args = new String[] { "*" + constraint.toString().toUpperCase(Locale.getDefault()) + "*" };
+                args = new String[] { "*" + constraint.toString().toUpperCase(Locale.ENGLISH) + "*" };
             }
 
             return mContent.query(ShoppingList.CONTENT_URI, PROJECTION,
@@ -183,6 +185,7 @@ public class Trolly extends ListActivity {
                     null);
 		}
 	}
+
 	/**
      * The columns we are interested in from the database
      */
@@ -207,6 +210,7 @@ public class Trolly extends ListActivity {
     /**
      * Case selections for the type of dialog box displayed
      */
+    //TODO: Replace with an enum
     private static final int DIALOG_DELETE = 1;
     private static final int DIALOG_EDIT = 2;
     private static final int DIALOG_CLEAR = 3;
@@ -281,7 +285,8 @@ public class Trolly extends ListActivity {
 						values.put(ShoppingList.STATUS, ShoppingList.ON_LIST);
 						long id = c.getLong(c.getColumnIndex(ShoppingList._ID));
 						Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-						getContentResolver().update(uri, values, null, null);
+                        assert uri != null;
+                        getContentResolver().update(uri, values, null, null);
 					}
 	        		mTextBox.setText("");
 				} else {
