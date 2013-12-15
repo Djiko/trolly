@@ -11,10 +11,6 @@ Trolly lets you create shooping lists, keeps track of added product and helps yo
 
 Trolly is a free software released under the GPL V3 licence. 
 
-## Roadmap
-
-As a re-starting project, Trolly is suffering from various issues. A good roadmap may help to solve them and improve the project 
-
 ### Bugs
   + **Locale issue** : some warning are showing in the code, due to Locale, specifically in the Trolly class.
   + **Openintents issue** : as is, the project will not compile because an **openintents** issue.
