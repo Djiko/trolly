@@ -270,8 +270,8 @@ public class Trolly extends ListActivity {
 				if (mTextBox.getText().length()>0) {
 					Cursor c = getContentResolver().query(getIntent().getData(), 
 							PROJECTION, 
-							ShoppingList.ITEM+"='"+mTextBox.getText()+"'", 
-							null, 
+							ShoppingList.ITEM+"=?",
+							new String[] {mTextBox.getText().toString()},
 							null);
 					c.moveToFirst();
 					if (c == null 
