@@ -13,12 +13,11 @@ Trolly is a free software released under the GPL V3 licence.
 
 ### Bugs
   + **Locale issue** : some warning are showing in the code, due to Locale, specifically in the Trolly class.
-  + **Openintents issue** : as is, the project will not compile because an **openintents** issue.
-  + **\' issue** : this problem might be existing in other languages. In French, if you use an apostrophe in a product's name, the application will crash. 
 
 ### TODO: Improvements
-  * UI -> implement a side menu
-  * Add French translation. COntributions are welcome if you are willing to add your own language
+  * UI -> implement a drawer
+  * UI -> implement the action bar
+  * Add French translation. Contributions are welcome if you are willing to add your own language
   * Cleaning the cached product list is not that intuitive. There may be some improvements to do there. 
   * follow up prices and shops : why not logging shops and prices ? Maybe compare shops for the same list
   * Create list from reference list : build a reference list and create new list from it
