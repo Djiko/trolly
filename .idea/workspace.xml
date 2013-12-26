@@ -10,7 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="15d3c161-0ab7-4784-9db8-34b43905c6fa" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
     </list>
     <ignored path="Trolly.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -74,10 +74,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Trolly.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/caldwell/ben/trolly/Trolly.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="274" column="34" selection-start="9463" selection-end="9463" vertical-scroll-proportion="5.7130437" vertical-offset="0" max-vertical-offset="9120">
+            <state line="3" column="28" selection-start="172" selection-end="172" vertical-scroll-proportion="0.16423358" vertical-offset="0" max-vertical-offset="615">
               <folding />
             </state>
           </provider>
@@ -464,6 +464,7 @@
       <list>
         <option value="$PROJECT_DIR$/src/caldwell/ben/trolly/Trolly.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -559,8 +560,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -581,19 +582,6 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -621,6 +609,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -750,7 +751,7 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3284553" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5105691" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5105691" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -786,6 +787,13 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/caldwell/ben/trolly/Trolly.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="274" column="34" selection-start="9463" selection-end="9463" vertical-scroll-proportion="0.0" vertical-offset="4110" max-vertical-offset="9435">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/caldwell/ben/trolly/Trolly.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="274" column="34" selection-start="9463" selection-end="9463" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10185">
           <folding />
         </state>
@@ -793,9 +801,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="109" selection-start="705" selection-end="705" vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="555">
-          <folding />
-        </state>
+        <state line="14" column="109" selection-start="705" selection-end="705" vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="555" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
@@ -814,14 +820,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="67" selection-start="663" selection-end="663" vertical-scroll-proportion="0.3652174" vertical-offset="0" max-vertical-offset="575">
-          <folding />
-        </state>
+        <state line="14" column="67" selection-start="663" selection-end="663" vertical-scroll-proportion="0.3652174" vertical-offset="0" max-vertical-offset="575" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/caldwell/ben/trolly/Trolly.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="274" column="34" selection-start="9463" selection-end="9463" vertical-scroll-proportion="5.7130437" vertical-offset="0" max-vertical-offset="9120">
+        <state line="274" column="34" selection-start="9463" selection-end="9463" vertical-scroll-proportion="-1.4347826" vertical-offset="4110" max-vertical-offset="9120">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="28" selection-start="172" selection-end="172" vertical-scroll-proportion="0.16423358" vertical-offset="0" max-vertical-offset="615">
           <folding />
         </state>
       </provider>
