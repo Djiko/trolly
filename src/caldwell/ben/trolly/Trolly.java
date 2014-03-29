@@ -61,7 +61,7 @@ public class Trolly extends ListActivity {
 	
 //	private static final String TAG = "Trolly";
 	
-	public static final String KEY_ITEM = "items";
+	// public static final String KEY_ITEM = "items";
 	public static boolean adding = false;
 	
 	/**
@@ -197,7 +197,7 @@ public class Trolly extends ListActivity {
     
     // Menu item ids
     public static final int MENU_ITEM_DELETE = Menu.FIRST;
-    public static final int MENU_ITEM_INSERT = Menu.FIRST + 1;
+    // public static final int MENU_ITEM_INSERT = Menu.FIRST + 1;
     public static final int MENU_ITEM_CHECKOUT = Menu.FIRST + 2;
     public static final int MENU_ITEM_PREFERENCE = Menu.FIRST + 3;
     public static final int MENU_ITEM_ON_LIST = Menu.FIRST + 4;
@@ -603,14 +603,17 @@ public class Trolly extends ListActivity {
 	    		id = c.getLong(c.getColumnIndexOrThrow(ShoppingList._ID));
 	    		uri = ContentUris.withAppendedId(getIntent().getData(), id);
 	    		//Update the status of this item (in trolley) to "off list"
-	    		getContentResolver().update(uri, values, null, null);
-	    		//Cleanup the list by deleting double up items that have been checked out
-	    		getContentResolver().delete(getIntent().getData(),
-	    										ShoppingList.ITEM + "='" 
-	    										+ c.getString(c.getColumnIndex(ShoppingList.ITEM)) 
-	    										+ "' AND " + ShoppingList._ID + "<>" + id
-	    										+ " AND " + ShoppingList.STATUS + "=" + ShoppingList.OFF_LIST, 
-	    										null);
+	    		if (uri != null) {
+                    getContentResolver().update(uri, values, null, null);
+                    //Cleanup the list by deleting double up items that have been checked out
+                    getContentResolver().delete(getIntent().getData(),
+                            ShoppingList.ITEM + "='"
+                                    + c.getString(c.getColumnIndex(ShoppingList.ITEM))
+                                    + "' AND " + ShoppingList._ID + "<>" + id
+                                    + " AND " + ShoppingList.STATUS + "=" + ShoppingList.OFF_LIST,
+                            null
+                    );
+                }
     		}
 	    	c.moveToNext();
     	}
