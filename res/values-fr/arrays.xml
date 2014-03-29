@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sort_order">
+        <item>Alphabétique croissant</item>
+        <item>Alphabétique décroissant</item>
+        <item>Date de modification croissante</item>
+        <item>Date de modification décroissante</item>
+    </string-array>
+    <string-array name="sort_order_values">
+        <item>article croissant</item>
+        <item>article décroissant</item>
+        <item>Date de modification croissante</item>
+        <item>Date de modification décroissante</item>
+    </string-array>
+</resources>
