@@ -5,7 +5,7 @@ Trolly has initially been released by [Ben Caldwell](https://code.google.com/p/t
 
 ## Features
 
-Trolly lets you create shooping lists, keeps track of added product and helps you manage your shopping time by giving you a quick and easy access to the list. 
+Trolly lets you create shopping lists, keeps track of added product and helps you manage your shopping time by giving you a quick and easy access to the list. 
 
 ## Licence
 
@@ -14,10 +14,9 @@ Trolly is a free software released under the GPL V3 licence.
 ### Bugs
   + **Locale issue** : some warning are showing in the code, due to Locale, specifically in the Trolly class.
 
-### TODO: Improvements
+### TODO: Improvements (someday)
   * UI -> implement a drawer
   * UI -> implement the action bar
-  * Add French translation. Contributions are welcome if you are willing to add your own language
   * Cleaning the cached product list is not that intuitive. There may be some improvements to do there. 
   * follow up prices and shops : why not logging shops and prices ? Maybe compare shops for the same list
   * Create list from reference list : build a reference list and create new list from it
@@ -26,6 +25,6 @@ Trolly is a free software released under the GPL V3 licence.
 
 ## Bug Tracker / Features requests
 
-Have a bug or a feature request? [Please open a new issue](https://code.google.com/p/trolly/issues). 
+Have a bug or a feature request? [Please open a new issue](https://bitbucket.org/Djiko/trolly/issues). 
 Before opening any issue, please search for existing issues.
 Before requesting a new feature, keep in mind that Trolly is meant to be simple. If your feature seems complicated, it might be a good time to make it more simple.
