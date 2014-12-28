@@ -105,21 +105,21 @@ public class Trolly extends ListActivity {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			TextView item = (TextView)view.findViewById(R.id.item);
+			TextView item = (TextView)view.findViewById(R.id.list_item);
 			item.setText(cursor.getString(cursor.getColumnIndex(ShoppingList.ITEM)));
 			switch(cursor.getInt(cursor.getColumnIndex(ShoppingList.STATUS))){
-			case ShoppingList.OFF_LIST:
-				item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-				item.setTextColor(Color.DKGRAY);
-				break;
-			case ShoppingList.ON_LIST:
-				item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-				item.setTextColor(Color.GREEN);
-				break;
-			case ShoppingList.IN_TROLLEY:
-				item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-				item.setTextColor(Color.GRAY);
-				break;
+                case ShoppingList.OFF_LIST:
+                    item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                    item.setTextColor(Color.DKGRAY);
+                    break;
+                case ShoppingList.ON_LIST:
+                    item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                    item.setTextColor(Color.GREEN);
+                    break;
+                case ShoppingList.IN_TROLLEY:
+                    item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    item.setTextColor(Color.GRAY);
+                    break;
 			}
 		}
 
@@ -303,13 +303,6 @@ public class Trolly extends ListActivity {
     
 	protected void updateList() {
         //set up the list cursor
-	    /*
-	           mCursor = managedQuery(getIntent().getData(),
-				PROJECTION, 
-				adding ? null: ShoppingList.STATUS+"<>"+ShoppingList.OFF_LIST,
-				null,
-				ShoppingList.DEFAULT_SORT_ORDER);
-				*/
         mCursor = getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
@@ -319,7 +312,7 @@ public class Trolly extends ListActivity {
 
         //set the list adapter
 		mAdapter = new TrollyAdapter(this, R.layout.shoppinglist_item, mCursor,
-		new String[] { ShoppingList.ITEM}, new int[] { R.id.item});
+		new String[] { ShoppingList.ITEM}, new int[] { R.id.list_item});
 		setListAdapter(mAdapter);
 	}
 
@@ -329,13 +322,7 @@ public class Trolly extends ListActivity {
 		
 		adding = false;
 		updateList();
-		/*
-		Cursor cAutoFill = managedQuery(getIntent().getData(), 
-				PROJECTION, 
-				null, 
-				null,
-				ShoppingList.DEFAULT_SORT_ORDER);
-*/
+
         Cursor cAutoFill= getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
@@ -599,11 +586,6 @@ public class Trolly extends ListActivity {
 	 * Change all items marked as "in trolley" to "off list"
 	 */
     private void checkout() {
-    	/*
-    	Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null,
-                ShoppingList.DEFAULT_SORT_ORDER);
-    	 */
-
         Cursor c = getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
