@@ -210,13 +210,12 @@ public class Trolly extends ListActivity {
     /**
      * Case selections for the type of dialog box displayed
      */
-    //TODO: Replace with an enum
     private static final int DIALOG_DELETE = 1;
     private static final int DIALOG_EDIT = 2;
     private static final int DIALOG_CLEAR = 3;
     private static final int DIALOG_RESET = 4;
-       
-  //Use private members for dialog textview to prevent weird persistence problem
+
+    //Use private members for dialog textview to prevent weird persistence problem
 	private EditText mDialogEdit;
 	private TextView mDialogText;
 	private View mDialogView;
@@ -246,8 +245,8 @@ public class Trolly extends ListActivity {
         // Inform the list we provide context menus for items
         getListView().setOnCreateContextMenuListener(this);
                
-	adding = false;
-	updateList();
+	    adding = false;
+	    updateList();
               
         mTextBox = (AutoCompleteTextView)findViewById(R.id.textbox);
         btnAdd = (Button)findViewById(R.id.btn_add);
@@ -295,7 +294,6 @@ public class Trolly extends ListActivity {
 				}
 			}
         });
-        //mPrefs = getSharedPreferences(null, MODE_PRIVATE);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         /*
         if (intent.hasExtra(org.openintents.intents.ShoppingListIntents.EXTRA_STRING_ARRAYLIST_SHOPPING))
@@ -305,11 +303,19 @@ public class Trolly extends ListActivity {
     
 	protected void updateList() {
         //set up the list cursor
-	        mCursor = managedQuery(getIntent().getData(), 
+	    /*
+	           mCursor = managedQuery(getIntent().getData(),
 				PROJECTION, 
 				adding ? null: ShoppingList.STATUS+"<>"+ShoppingList.OFF_LIST,
 				null,
 				ShoppingList.DEFAULT_SORT_ORDER);
+				*/
+        mCursor = getContentResolver().query(
+                getIntent().getData(),
+                PROJECTION,
+                adding ? null: ShoppingList.STATUS+"<>"+ShoppingList.OFF_LIST,
+                null,
+                ShoppingList.DEFAULT_SORT_ORDER);
 
         //set the list adapter
 		mAdapter = new TrollyAdapter(this, R.layout.shoppinglist_item, mCursor,
@@ -323,13 +329,19 @@ public class Trolly extends ListActivity {
 		
 		adding = false;
 		updateList();
-		
+		/*
 		Cursor cAutoFill = managedQuery(getIntent().getData(), 
 				PROJECTION, 
 				null, 
 				null,
 				ShoppingList.DEFAULT_SORT_ORDER);
-		
+*/
+        Cursor cAutoFill= getContentResolver().query(
+                getIntent().getData(),
+                PROJECTION,
+                null,
+                null,
+                null);
 		AutoFillAdapter autoFillAdapter = new AutoFillAdapter(this, cAutoFill);
 		mTextBox.setAdapter(autoFillAdapter);
 	}
@@ -587,8 +599,18 @@ public class Trolly extends ListActivity {
 	 * Change all items marked as "in trolley" to "off list"
 	 */
     private void checkout() {
+    	/*
     	Cursor c = managedQuery(getIntent().getData(), PROJECTION, null, null,
                 ShoppingList.DEFAULT_SORT_ORDER);
+    	 */
+
+        Cursor c = getContentResolver().query(
+                getIntent().getData(),
+                PROJECTION,
+                null,
+                null,
+                ShoppingList.DEFAULT_SORT_ORDER);
+
     	c.moveToFirst();
     	ContentValues values = new ContentValues();
     	values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
