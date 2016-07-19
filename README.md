@@ -1,5 +1,7 @@
 # [Trolly](http://github.com/djiko/trolly)
 
+[![Build Status](https://travis-ci.org/Djiko/trolly.svg?branch=master)](https://travis-ci.org/Djiko/trolly)
+
 Trolly is a shopping list application for android, aiming at being very simple : no annoying, complicated or unnecessary features.
 Trolly has initially been released by [Ben Caldwell](https://code.google.com/p/trolly/) as a [GPL V3](http://www.gnu.org/licenses/gpl.html) open source project.
 
