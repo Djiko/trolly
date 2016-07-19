@@ -288,6 +288,7 @@ public class Trolly extends ListActivity {
                     updateList();
 				} else {
 					adding = !adding;
+					updateList();
 				}
 			}
             });

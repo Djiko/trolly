@@ -15,7 +15,6 @@ Trolly is a free software released under the GPL V3 licence.
   + **Locale issue** : some warning are showing in the code, due to Locale, specifically in the Trolly class.
 
 ### TODO: Improvements (someday)
-  * UI -> implement a drawer
   * UI -> implement the action bar
   * Cleaning the cached product list is not that intuitive. There may be some improvements to do there. 
   * follow up prices and shops : why not logging shops and prices ? Maybe compare shops for the same list

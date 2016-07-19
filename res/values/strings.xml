@@ -33,7 +33,4 @@
     <string name="shopping_mode_sort_order_summary">Order of items on the list when in shopping mode</string>
     <string name="shopping_mode_sort_order_dialog_title">Shopping Mode Order</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>
