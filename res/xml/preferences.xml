@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<ListPreference android:key="@string/key_sort_list"
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+		android:key="key_sort_list"
 		android:title="@string/list_mode_sort_order_title"
 		android:summary="@string/list_mode_sort_order_summary"
 		android:dialogTitle="@string/list_mode_sort_order_dialog_title"
 		android:entries="@array/sort_order"
 		android:entryValues="@array/sort_order_values" />
-	<ListPreference android:key="@string/key_sort_shop"
+
+    <ListPreference
+        android:key="key_sort_shop"
 		android:title="@string/shopping_mode_sort_order_title"
 		android:summary="@string/shopping_mode_sort_order_summary"
 		android:dialogTitle="@string/shopping_mode_sort_order_dialog_title"
 		android:entries="@array/sort_order"
 		android:entryValues="@array/sort_order_values" />
+
 </PreferenceScreen>

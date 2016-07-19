@@ -4,22 +4,22 @@
     <string name="shopping_button">Shopping</string>
     <string name="listing_button">Listing</string>
     <string name="empty_list">Empty list</string>
-    
+
     <string name="add">Add</string>
     <string name="add_hint">Add an item</string>
     <string name="checkout">Checkout</string>
     <string name="dialog_ok">OK</string>
     <string name="dialog_cancel">Cancel</string>
-    
+
     <string name="delete_item">Delete</string>
     <string name="edit_item">Edit</string>
     <string name="move_on_list">On list</string>
     <string name="move_off_list">Off list</string>
     <string name="move_in_trolley">In trolley</string>
-    
+
     <string name="key_sort_list">list mode sort order</string>
     <string name="key_sort_shop">shop mode sort order</string>
-    
+
     <string name="preferences">Preferences</string>
     <string name="clear_list">Clear List</string>
     <string name="clear_prompt">Remove all items from the list?</string>
@@ -32,5 +32,8 @@
     <string name="shopping_mode_sort_order_title">Shopping mode sort order</string>
     <string name="shopping_mode_sort_order_summary">Order of items on the list when in shopping mode</string>
     <string name="shopping_mode_sort_order_dialog_title">Shopping Mode Order</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
