@@ -15,11 +15,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-   
 
 package caldwell.ben.trolly;
-
-// import java.util.ArrayList;
 
 import java.util.Locale;
 
@@ -37,9 +34,11 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -59,9 +58,6 @@ import android.widget.TextView;
 
 public class Trolly extends ListActivity {
 	
-//	private static final String TAG = "Trolly";
-	
-	// public static final String KEY_ITEM = "items";
 	public static boolean adding = false;
 	
 	/**
@@ -77,7 +73,8 @@ public class Trolly extends ListActivity {
 		//TODO: move to public SimpleCursorAdapter (Context context, int layout, Cursor c, String[] from, int[] to, int flags)
 		public TrollyAdapter(Context context, int layout, Cursor c, String[] from, int[] to) 
 		{
-			super(context, layout, c, from, to);
+			// super(context, layout, c, from, to);
+			super(context,layout, c, from, to, 0);
 			mContent = context.getContentResolver();
 		}
 		
@@ -197,7 +194,6 @@ public class Trolly extends ListActivity {
     
     // Menu item ids
     public static final int MENU_ITEM_DELETE = Menu.FIRST;
-    // public static final int MENU_ITEM_INSERT = Menu.FIRST + 1;
     public static final int MENU_ITEM_CHECKOUT = Menu.FIRST + 2;
     public static final int MENU_ITEM_PREFERENCE = Menu.FIRST + 3;
     public static final int MENU_ITEM_ON_LIST = Menu.FIRST + 4;
@@ -218,18 +214,12 @@ public class Trolly extends ListActivity {
     //Use private members for dialog textview to prevent weird persistence problem
 	private EditText mDialogEdit;
 	private TextView mDialogText;
-	private View mDialogView;
 
-	private Cursor mCursor;
-	private AutoCompleteTextView mTextBox;
-	private Button btnAdd;
-	private TrollyAdapter mAdapter;
-	private SharedPreferences mPrefs;
+    private AutoCompleteTextView mTextBox;
+    private SharedPreferences mPrefs;
 
 	private Uri mUri;
 	
-	
-    /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -249,8 +239,6 @@ public class Trolly extends ListActivity {
 	    updateList();
               
         mTextBox = (AutoCompleteTextView)findViewById(R.id.textbox);
-        btnAdd = (Button)findViewById(R.id.btn_add);
-        
         mTextBox.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View view) {
@@ -259,15 +247,18 @@ public class Trolly extends ListActivity {
 					adding = false;
 					updateList();
 				}
-			}
-	});
+    			}
+	    });
 
+        Button btnAdd = (Button) findViewById(R.id.btn_add);
         btnAdd.setOnClickListener(new Button.OnClickListener(){
 			@Override
 			public void onClick(View view) {
 				//If there is a string in the textbox then add it to the list
 				if (mTextBox.getText().length()>0) {
-					Cursor c = getContentResolver().query(getIntent().getData(), 
+                    //TODO: FIX - Close cursor
+                    //TODO: FIX - surround with try/catch
+                    Cursor c = getContentResolver().query(getIntent().getData(),
 							PROJECTION, 
 							ShoppingList.ITEM+"=?",
 							new String[] {mTextBox.getText().toString()},
@@ -293,26 +284,26 @@ public class Trolly extends ListActivity {
 					updateList();
 				}
 			}
-        });
+            });
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        /*
-        if (intent.hasExtra(org.openintents.intents.ShoppingListIntents.EXTRA_STRING_ARRAYLIST_SHOPPING))
-        	addExtraItems();
-        	*/
     }
     
 	protected void updateList() {
         //set up the list cursor
-        mCursor = getContentResolver().query(
+        // TODO: Close cursor
+        Cursor cursor = getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
-                adding ? null: ShoppingList.STATUS+"<>"+ShoppingList.OFF_LIST,
+                adding ? null : ShoppingList.STATUS + "<>" + ShoppingList.OFF_LIST,
                 null,
                 ShoppingList.DEFAULT_SORT_ORDER);
 
         //set the list adapter
-		mAdapter = new TrollyAdapter(this, R.layout.shoppinglist_item, mCursor,
-		new String[] { ShoppingList.ITEM}, new int[] { R.id.list_item});
+        TrollyAdapter mAdapter = new TrollyAdapter(this,
+                R.layout.shoppinglist_item,
+                cursor,
+                new String[]{ShoppingList.ITEM},
+                new int[]{R.id.list_item});
 		setListAdapter(mAdapter);
 	}
 
@@ -323,6 +314,7 @@ public class Trolly extends ListActivity {
 		adding = false;
 		updateList();
 
+        //TODO: FIX - Close cursor
         Cursor cAutoFill= getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
@@ -337,13 +329,16 @@ public class Trolly extends ListActivity {
 	protected void onPause() {
 		super.onPause();
 		SharedPreferences.Editor ed = mPrefs.edit();
-		ed.commit();
+        //TODO: IMP - move to apply()
+        ed.commit();
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		//super.onListItemClick(l, v, position, id);
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
+
+        //TODO: FIX - Close cursor
+        //TODO: FIX - add try&catch to manage NullPointerException
 		Cursor c = getContentResolver().query(uri, PROJECTION, null, null, null);
 		c.moveToFirst();
 		ContentValues values = new ContentValues();
@@ -387,38 +382,47 @@ public class Trolly extends ListActivity {
         
         mUri = ContentUris.withAppendedId(getIntent().getData(), 
         									cursor.getLong(cursor.getColumnIndex(ShoppingList._ID)));
-		Cursor c = getContentResolver().query(mUri, PROJECTION, null, null, null);
-		c.moveToFirst();
+        //TODO: FIX - Close cursor
+        //TODO: FIX - add try&catch to manage NullPointerException
+        Cursor c = getContentResolver().query(mUri, PROJECTION, null, null, null);
+        c.moveToFirst();
 		ContentValues values = new ContentValues();
+        boolean result = false;
 
         switch (item.getItemId()) {
 	        case MENU_ITEM_ON_LIST:
                 // Change to "on list" status
 	        	values.put(ShoppingList.STATUS, ShoppingList.ON_LIST);
 	        	getContentResolver().update(mUri, values, null, null);
-	        	return true;	        	
+	        	result = true;
 	        case MENU_ITEM_OFF_LIST:
                 // Change to "off list" status
 	        	values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
 	        	getContentResolver().update(mUri, values, null, null);
-                return true;
+                result = true;
 	        case MENU_ITEM_IN_TROLLEY:
 	        	//Change to "in trolley" status
 	        	values.put(ShoppingList.STATUS, ShoppingList.IN_TROLLEY);
 	        	getContentResolver().update(mUri, values, null, null);
-	        	return true;
+                result = true;
 	        case MENU_ITEM_EDIT:
-	        	//Show edit dialog
-	        	showDialog(DIALOG_EDIT);
-	        	mDialogEdit.setText(c.getString(c.getColumnIndex(ShoppingList.ITEM)));
-	        	return true;
+                buildDialog(DIALOG_EDIT,
+                        android.R.drawable.ic_dialog_info,
+                        R.string.edit_item,
+                        c.getString(c.getColumnIndex(ShoppingList.ITEM)),
+                        R.string.dialog_ok,
+                        R.string.dialog_cancel);
+                result = true;
 	        case MENU_ITEM_DELETE:
-	        	//Show are you sure dialog then delete
-	        	showDialog(DIALOG_DELETE);
-	        	mDialogText.setText(c.getString(c.getColumnIndex(ShoppingList.ITEM)));
-	        	return true;
+                buildDialog(DIALOG_DELETE,
+                        android.R.drawable.ic_dialog_info,
+                        R.string.delete_item,
+                        c.getString(c.getColumnIndex(ShoppingList.ITEM)),
+                        R.string.dialog_ok,
+                        R.string.dialog_cancel);
+                result = true;
         }
-        return false;
+        return result;
 	}
 
 	@Override
@@ -441,18 +445,18 @@ public class Trolly extends ListActivity {
         
     	//Add context menu items depending on current state
     	switch (status) {
-        case ShoppingList.OFF_LIST:
-        	menu.add(0, MENU_ITEM_ON_LIST, 0, R.string.move_on_list);
-        	menu.add(0, MENU_ITEM_IN_TROLLEY, 0, R.string.move_in_trolley);
-        	break;
-        case ShoppingList.ON_LIST:
-        	menu.add(0, MENU_ITEM_IN_TROLLEY, 0, R.string.move_in_trolley);
-        	menu.add(0, MENU_ITEM_OFF_LIST, 0, R.string.move_off_list);
-        	break;
-        case ShoppingList.IN_TROLLEY:
-        	menu.add(0, MENU_ITEM_ON_LIST, 0, R.string.move_on_list);
-        	menu.add(0, MENU_ITEM_OFF_LIST, 0, R.string.move_off_list);
-        	break;
+            case ShoppingList.OFF_LIST:
+                menu.add(0, MENU_ITEM_ON_LIST, 0, R.string.move_on_list);
+                menu.add(0, MENU_ITEM_IN_TROLLEY, 0, R.string.move_in_trolley);
+                break;
+            case ShoppingList.ON_LIST:
+                menu.add(0, MENU_ITEM_IN_TROLLEY, 0, R.string.move_in_trolley);
+                menu.add(0, MENU_ITEM_OFF_LIST, 0, R.string.move_off_list);
+                break;
+            case ShoppingList.IN_TROLLEY:
+                menu.add(0, MENU_ITEM_ON_LIST, 0, R.string.move_on_list);
+                menu.add(0, MENU_ITEM_OFF_LIST, 0, R.string.move_off_list);
+                break;
         }
     	
         // Add context menu items that are relevant for all items
@@ -476,112 +480,81 @@ public class Trolly extends ListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+        //TODO: IMP - move to AlertDialog
 		switch (item.getItemId()) {
-        case MENU_ITEM_CHECKOUT:
-        	//Change all items from in trolley to off list
-        	checkout();
-        	return true;
-        case MENU_ITEM_CLEAR:
-        	//Change all items to off list
-        	showDialog(DIALOG_CLEAR);
-        	mDialogText.setText(R.string.clear_prompt);
-        	return true;
-        case MENU_ITEM_RESET:
-        	//Change all items to off list
-        	showDialog(DIALOG_RESET);
-        	mDialogText.setText(R.string.reset_prompt);
-        	return true;
-        case MENU_ITEM_PREFERENCE:
-        	startActivity(new Intent(this,TrollyPreferences.class));
-        	return true;
+            case MENU_ITEM_CHECKOUT:
+                //Change all items from in trolley to off list
+                checkout();
+                return true;
+            case MENU_ITEM_CLEAR:
+                //Change all items to off list
+                buildDialog(DIALOG_CLEAR,
+                        android.R.drawable.ic_dialog_info,
+                        R.string.clear_list,
+                        getString(R.string.clear_prompt),
+                        R.string.dialog_ok,
+                        R.string.dialog_cancel);
+                return true;
+            case MENU_ITEM_RESET:
+                //Change all items to off list
+                buildDialog(DIALOG_RESET,
+                        android.R.drawable.ic_dialog_info,
+                        R.string.reset_list,
+                        getString(R.string.reset_prompt),
+                        R.string.dialog_ok,
+                        R.string.dialog_cancel);
+                return true;
+            case MENU_ITEM_PREFERENCE:
+                startActivity(new Intent(this,TrollyPreferences.class));
+                return true;
         }
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		LayoutInflater factory = LayoutInflater.from(this);
-		switch (id) {
-		case DIALOG_EDIT:
-            mDialogView = factory.inflate(R.layout.dialog_edit, null);
-            mDialogEdit = (EditText)mDialogView.findViewById(R.id.edit);
-            return new AlertDialog.Builder(this)
-                .setTitle(R.string.edit_item)
-                .setView(mDialogView)
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                	public void onClick(DialogInterface dialog, int whichButton) {
-                    	/* User clicked OK so do some stuff */
-                		ContentValues values = new ContentValues();
-                        values.put(ShoppingList.ITEM, mDialogEdit.getText().toString());
-                		getContentResolver().update(mUri, values, null, null);
-                	}
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked cancel so do some stuff */
+    private void buildDialog(final int dialog, int icon, int title, String message, int positiveText, int negativetext) {
+
+        new AlertDialog.Builder(this)
+            .setIcon(icon)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    ContentValues values = new ContentValues();
+                    switch (dialog) {
+                        case (DIALOG_CLEAR):
+                            // Clears the list
+                            Log.i("Button clicked", "Ok CLEAR button");
+                            values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
+                            getContentResolver().update(getIntent().getData(), values, null, null);
+                            break;
+                        case (DIALOG_RESET):
+                            // Resets the list
+                            Log.i("Button clicked", "Ok RESET button");
+                            getContentResolver().delete(getIntent().getData(), null, null);
+                            break;
+                        case (DIALOG_DELETE):
+                            // Delete an item from the list
+                            Log.i("Button clicked", "Ok DELETE button");
+                            getContentResolver().delete(mUri, null, null);
+                            break;
+                        case (DIALOG_EDIT):
+                            // Edit an item in the list
+                            Log.i("Button clicked", "Ok EDIT button");
+                            values.put(ShoppingList.ITEM, mDialogEdit.getText().toString());
+                            getContentResolver().update(mUri, values, null, null);
+                            break;
                     }
-                })
-                .create();
-		case DIALOG_DELETE:
-            mDialogView = factory.inflate(R.layout.dialog_confirm, null);
-            mDialogText = (TextView)mDialogView.findViewById(R.id.dialog_confirm_prompt);
-            return new AlertDialog.Builder(this)
-                .setTitle(R.string.delete_item)
-                .setView(mDialogView)
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                	public void onClick(DialogInterface dialog, int whichButton) {
-                    	/* User clicked OK so do some stuff */
-                		getContentResolver().delete(mUri, null, null);
-                	}
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked cancel so do some stuff */
-                    }
-                })
-                .create();
-		case DIALOG_CLEAR:
-            mDialogView = factory.inflate(R.layout.dialog_confirm, null);
-            mDialogText = (TextView)mDialogView.findViewById(R.id.dialog_confirm_prompt);
-            return new AlertDialog.Builder(this)
-                .setTitle(R.string.clear_list)
-                .setView(mDialogView)
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                	public void onClick(DialogInterface dialog, int whichButton) {
-                		ContentValues values = new ContentValues();
-                    	//Set all items status to "off list"
-                    	values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
-                    	getContentResolver().update(getIntent().getData(), values, null, null);
-                	}
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked cancel so do some stuff */
-                    }
-                })
-                .create();
-		case DIALOG_RESET:
-            mDialogView = factory.inflate(R.layout.dialog_confirm, null);
-            mDialogText = (TextView)mDialogView.findViewById(R.id.dialog_confirm_prompt);
-            return new AlertDialog.Builder(this)
-                .setTitle(R.string.reset_list)
-                .setView(mDialogView)
-                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-                	public void onClick(DialogInterface dialog, int whichButton) {
-                    	//Permanently delete all items from the list
-                    	getContentResolver().delete(getIntent().getData(), null, null);
-                	}
-                })
-                .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        /* User clicked cancel so do some stuff */
-                    }
-                })
-                .create();
-		}
-		return null;
-	}
-    
+                }
+            })
+            .setNegativeButton(negativetext, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            })
+            .show();
+    }
+
 	/**
 	 * Change all items marked as "in trolley" to "off list"
 	 */
