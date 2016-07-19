@@ -56,6 +56,9 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+
+//TODO move ListView to RecyclerView
+
 public class Trolly extends ListActivity {
 	
 	public static boolean adding = false;
@@ -95,8 +98,11 @@ public class Trolly extends ListActivity {
                 args = new String[] { "*" + constraint.toString().toUpperCase(currentLocale) + "*" };
             }
 
-            return mContent.query(ShoppingList.CONTENT_URI, PROJECTION,
-                    buffer == null ? null : buffer.toString(), args,
+            return mContent.query(
+                    ShoppingList.CONTENT_URI,
+                    PROJECTION,
+                    buffer == null ? null : buffer.toString(),
+                    args,
                     null);
         }
 
@@ -124,7 +130,6 @@ public class Trolly extends ListActivity {
 		public CharSequence convertToString(Cursor cursor) {
 			return cursor.getString(cursor.getColumnIndex(ShoppingList.ITEM));
 		}
-		
 	}
 	
 	/**
@@ -258,14 +263,15 @@ public class Trolly extends ListActivity {
 				if (mTextBox.getText().length()>0) {
                     //TODO: FIX - Close cursor
                     //TODO: FIX - surround with try/catch
-                    Cursor c = getContentResolver().query(getIntent().getData(),
+                    Cursor c = getContentResolver().query(
+                            getIntent().getData(),
 							PROJECTION, 
 							ShoppingList.ITEM+"=?",
 							new String[] {mTextBox.getText().toString()},
 							null);
 					c.moveToFirst();
-					if (c == null 
-							|| c.isBeforeFirst() 
+					if (c == null
+                            || c.isBeforeFirst()
 							|| c.getInt(c.getColumnIndex(ShoppingList.STATUS))==ShoppingList.ON_LIST) {
 						ContentValues values = new ContentValues();
 						values.put(ShoppingList.ITEM, mTextBox.getText().toString());
@@ -279,9 +285,9 @@ public class Trolly extends ListActivity {
                         getContentResolver().update(uri, values, null, null);
 					}
 	        		mTextBox.setText("");
+                    updateList();
 				} else {
 					adding = !adding;
-					updateList();
 				}
 			}
             });
@@ -291,20 +297,27 @@ public class Trolly extends ListActivity {
 	protected void updateList() {
         //set up the list cursor
         // TODO: Close cursor
-        Cursor cursor = getContentResolver().query(
-                getIntent().getData(),
-                PROJECTION,
-                adding ? null : ShoppingList.STATUS + "<>" + ShoppingList.OFF_LIST,
-                null,
-                ShoppingList.DEFAULT_SORT_ORDER);
+        try {
+            Cursor cursor = getContentResolver()
+                    .query(
+                            getIntent().getData(),
+                            PROJECTION,
+                            adding ? null : ShoppingList.STATUS + "<>" + ShoppingList.OFF_LIST,
+                            null,
+                            ShoppingList.DEFAULT_SORT_ORDER
+                    );
 
-        //set the list adapter
-        TrollyAdapter mAdapter = new TrollyAdapter(this,
-                R.layout.shoppinglist_item,
-                cursor,
-                new String[]{ShoppingList.ITEM},
-                new int[]{R.id.list_item});
-		setListAdapter(mAdapter);
+            //set the list adapter
+            TrollyAdapter mAdapter = new TrollyAdapter(
+                    this,
+                    R.layout.shoppinglist_item,
+                    cursor,
+                    new String[]{ShoppingList.ITEM},
+                    new int[]{R.id.list_item});
+            setListAdapter(mAdapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	@Override
