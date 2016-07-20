@@ -163,20 +163,20 @@ public class TrollyProvider extends ContentProvider {
         Long now = Long.valueOf(System.currentTimeMillis());
 
         // Make sure that the fields are all set
-        if (values.containsKey(ShoppingList.CREATED_DATE) == false) {
+        if (!values.containsKey(ShoppingList.CREATED_DATE)) {
             values.put(ShoppingList.CREATED_DATE, now);
         }
 
-        if (values.containsKey(ShoppingList.MODIFIED_DATE) == false) {
+        if (!values.containsKey(ShoppingList.MODIFIED_DATE)) {
             values.put(ShoppingList.MODIFIED_DATE, now);
         }
 
-        if (values.containsKey(ShoppingList.ITEM) == false) {
+        if (!values.containsKey(ShoppingList.ITEM)) {
             Resources r = Resources.getSystem();
             values.put(ShoppingList.ITEM, r.getString(android.R.string.untitled));
         }
 
-        if (values.containsKey(ShoppingList.STATUS) == false) {
+        if (!values.containsKey(ShoppingList.STATUS)) {
             values.put(ShoppingList.STATUS, Trolly.ShoppingList.ON_LIST);
         }
 
@@ -229,7 +229,7 @@ public class TrollyProvider extends ContentProvider {
         Long now = Long.valueOf(System.currentTimeMillis());
 
         // Update the modified field
-        if (values.containsKey(ShoppingList.MODIFIED_DATE) == false) {
+        if (!values.containsKey(ShoppingList.MODIFIED_DATE)) {
             values.put(ShoppingList.MODIFIED_DATE, now);
         }
         
