@@ -3,7 +3,7 @@
     <string name="app_name">Trolly</string>
     <string name="shopping_button">Shopping</string>
     <string name="listing_button">Liste</string>
-    <string name="empty_list">Liste vide</string>
+    <string name="empty_list">Votre liste est vide</string>
 
     <string name="add">Ajouter</string>
     <string name="add_hint">Ajouter un article</string>

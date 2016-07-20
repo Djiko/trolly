@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import caldwell.ben.provider.Trolly.ShoppingList;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -34,10 +33,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -59,7 +58,7 @@ import android.widget.TextView;
 
 //TODO move ListView to RecyclerView
 
-public class Trolly extends ListActivity {
+public class Trolly extends AppCompatActivity {
 	
 	public static boolean adding = false;
 	
@@ -74,10 +73,10 @@ public class Trolly extends ListActivity {
 		private ContentResolver mContent;   
 		
 		//TODO: move to public SimpleCursorAdapter (Context context, int layout, Cursor c, String[] from, int[] to, int flags)
-		public TrollyAdapter(Context context, int layout, Cursor c, String[] from, int[] to) 
+		public TrollyAdapter(Context context, Cursor c, String[] from, int[] to)
 		{
 			// super(context, layout, c, from, to);
-			super(context,layout, c, from, to, 0);
+			super(context, R.layout.shoppinglist_item, c, from, to, 0);
 			mContent = context.getContentResolver();
 		}
 		
@@ -117,7 +116,7 @@ public class Trolly extends ListActivity {
                     break;
                 case ShoppingList.ON_LIST:
                     item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-                    item.setTextColor(Color.GREEN);
+                    item.setTextColor(Color.BLUE);
                     break;
                 case ShoppingList.IN_TROLLEY:
                     item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -216,15 +215,14 @@ public class Trolly extends ListActivity {
     private static final int DIALOG_CLEAR = 3;
     private static final int DIALOG_RESET = 4;
 
-    //Use private members for dialog textview to prevent weird persistence problem
-	private EditText mDialogEdit;
-	private TextView mDialogText;
-
     private AutoCompleteTextView mTextBox;
     private SharedPreferences mPrefs;
 
 	private Uri mUri;
-	
+
+    private EditText mDialogEdit;
+    private ListView lv;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -236,11 +234,19 @@ public class Trolly extends ListActivity {
             intent.setData(ShoppingList.CONTENT_URI);
         }
               
-        setContentView(R.layout.trolly);  
-        // Inform the list we provide context menus for items
-        getListView().setOnCreateContextMenuListener(this);
-               
-	    adding = false;
+        setContentView(R.layout.trolly);
+
+        lv = (ListView) findViewById(R.id.lv);
+        lv.setEmptyView(findViewById(R.id.lv_empty));
+        lv.setOnCreateContextMenuListener(this);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //onListItemClick(lv, view, position, id);
+            }
+        });
+
+        adding = false;
 	    updateList();
               
         mTextBox = (AutoCompleteTextView)findViewById(R.id.textbox);
@@ -308,14 +314,13 @@ public class Trolly extends ListActivity {
                             ShoppingList.DEFAULT_SORT_ORDER
                     );
 
-            //set the list adapter
-            TrollyAdapter mAdapter = new TrollyAdapter(
-                    this,
-                    R.layout.shoppinglist_item,
-                    cursor,
-                    new String[]{ShoppingList.ITEM},
-                    new int[]{R.id.list_item});
-            setListAdapter(mAdapter);
+                //set the list adapter
+                TrollyAdapter mAdapter = new TrollyAdapter(
+                        this,
+                        cursor,
+                        new String[]{ShoppingList.ITEM},
+                        new int[]{R.id.list_item});
+                lv.setAdapter(mAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -347,7 +352,7 @@ public class Trolly extends ListActivity {
         ed.commit();
 	}
 
-	@Override
+	// @Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
 
@@ -388,7 +393,8 @@ public class Trolly extends ListActivity {
             return false;
         }
         
-        Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+        //Cursor cursor = (Cursor) getListAdapter().getItem(info.position);
+        Cursor cursor = (Cursor) lv.getAdapter().getItem(info.position);
         if (cursor == null) {
             // For some reason the requested item isn't available, do nothing
             return false;
@@ -409,16 +415,19 @@ public class Trolly extends ListActivity {
 	        	values.put(ShoppingList.STATUS, ShoppingList.ON_LIST);
 	        	getContentResolver().update(mUri, values, null, null);
 	        	result = true;
+                break;
 	        case MENU_ITEM_OFF_LIST:
                 // Change to "off list" status
 	        	values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
 	        	getContentResolver().update(mUri, values, null, null);
                 result = true;
-	        case MENU_ITEM_IN_TROLLEY:
+                break;
+            case MENU_ITEM_IN_TROLLEY:
 	        	//Change to "in trolley" status
 	        	values.put(ShoppingList.STATUS, ShoppingList.IN_TROLLEY);
 	        	getContentResolver().update(mUri, values, null, null);
                 result = true;
+                break;
 	        case MENU_ITEM_EDIT:
                 buildDialog(DIALOG_EDIT,
                         android.R.drawable.ic_dialog_info,
@@ -427,6 +436,7 @@ public class Trolly extends ListActivity {
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
                 result = true;
+                break;
 	        case MENU_ITEM_DELETE:
                 buildDialog(DIALOG_DELETE,
                         android.R.drawable.ic_dialog_info,
@@ -435,6 +445,7 @@ public class Trolly extends ListActivity {
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
                 result = true;
+                break;
         }
         return result;
 	}
@@ -448,7 +459,7 @@ public class Trolly extends ListActivity {
         } catch (ClassCastException e) {
             return;
         }
-		Cursor cursor = (Cursor)getListAdapter().getItem(info.position);
+		Cursor cursor = (Cursor) lv.getAdapter().getItem(info.position);
 		if (cursor == null) {
             // For some reason the requested item isn't available, do nothing
             return;
@@ -555,6 +566,7 @@ public class Trolly extends ListActivity {
                         case (DIALOG_EDIT):
                             // Edit an item in the list
                             Log.i("Button clicked", "Ok EDIT button");
+                            // mDialogEdit = (EditText) findViewById(R.id.dialog_confirm_prompt);
                             values.put(ShoppingList.ITEM, mDialogEdit.getText().toString());
                             getContentResolver().update(mUri, values, null, null);
                             break;
@@ -594,16 +606,13 @@ public class Trolly extends ListActivity {
 	    		id = c.getLong(c.getColumnIndexOrThrow(ShoppingList._ID));
 	    		uri = ContentUris.withAppendedId(getIntent().getData(), id);
 	    		//Update the status of this item (in trolley) to "off list"
-	    		if (uri != null) {
-                    getContentResolver().update(uri, values, null, null);
+                try {
                     //Cleanup the list by deleting double up items that have been checked out
-                    getContentResolver().delete(getIntent().getData(),
-                            ShoppingList.ITEM + "='"
-                                    + c.getString(c.getColumnIndex(ShoppingList.ITEM))
-                                    + "' AND " + ShoppingList._ID + "<>" + id
-                                    + " AND " + ShoppingList.STATUS + "=" + ShoppingList.OFF_LIST,
-                            null
-                    );
+                    String itemToDelete = ShoppingList.ITEM + "='" + c.getString(c.getColumnIndex(ShoppingList.ITEM)) + "' AND " + ShoppingList._ID + "<>" + id + " AND " + ShoppingList.STATUS + "=" + ShoppingList.OFF_LIST;
+                    getContentResolver().update(uri, values, null, null);
+                    getContentResolver().delete(getIntent().getData(), itemToDelete, null);
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
     		}
 	    	c.moveToNext();
