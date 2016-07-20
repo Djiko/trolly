@@ -116,7 +116,7 @@ public class Trolly extends AppCompatActivity {
                     break;
                 case ShoppingList.ON_LIST:
                     item.setPaintFlags(item.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
-                    item.setTextColor(Color.BLUE);
+                    item.setTextColor(Color.GREEN);
                     break;
                 case ShoppingList.IN_TROLLEY:
                     item.setPaintFlags(item.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -242,7 +242,7 @@ public class Trolly extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //onListItemClick(lv, view, position, id);
+                onListItemClick(lv, view, position, id);
             }
         });
 
@@ -378,10 +378,9 @@ public class Trolly extends AppCompatActivity {
 			getContentResolver().update(uri, values, null, null);
 			break;
 		}
-		if (adding) {
-			adding = false;				
-			updateList();
-		}		
+		if (adding)
+			adding = false;
+        updateList();
 	}
 
 	@Override
