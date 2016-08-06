@@ -349,7 +349,7 @@ public class Trolly extends AppCompatActivity {
 		super.onPause();
 		SharedPreferences.Editor ed = mPrefs.edit();
         //TODO: IMP - move to apply()
-        ed.commit();
+        ed.apply();
 	}
 
 	// @Override
