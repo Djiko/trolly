@@ -17,14 +17,14 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.djiko.trolly"
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 23
         versionCode 9
         versionName "2.1 Morigane"
     }
