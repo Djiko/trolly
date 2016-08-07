@@ -223,6 +223,7 @@ public class Trolly extends AppCompatActivity {
     private EditText mDialogEdit;
     private ListView lv;
     private Cursor mCursor;
+    private Cursor mCAutoFill;
 
     /**
      * Add button listener. If the item edittext contains something, it will either add the item to the content provider or just update the list with an existing item.
@@ -330,14 +331,13 @@ public class Trolly extends AppCompatActivity {
 		adding = false;
 		updateList();
 
-        //TODO: FIX - Close cursor
-        Cursor cAutoFill= getContentResolver().query(
+        mCAutoFill = getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
                 null,
                 null,
                 null);
-		AutoFillAdapter autoFillAdapter = new AutoFillAdapter(this, cAutoFill);
+		AutoFillAdapter autoFillAdapter = new AutoFillAdapter(this, mCAutoFill);
 		mTextBox.setAdapter(autoFillAdapter);
 	}
 
@@ -346,6 +346,7 @@ public class Trolly extends AppCompatActivity {
 		super.onPause();
 		SharedPreferences.Editor ed = mPrefs.edit();
         mCursor.close();
+        mCAutoFill.close();
         ed.apply();
 	}
 
