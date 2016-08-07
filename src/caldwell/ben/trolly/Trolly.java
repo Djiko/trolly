@@ -223,6 +223,40 @@ public class Trolly extends AppCompatActivity {
     private EditText mDialogEdit;
     private ListView lv;
 
+    /**
+     * Add button listener. If the item edittext contains something, it will either add the item to the content provider or just update the list with an existing item.
+     * @param view
+     */
+    public void addButtonClicked(View view) {
+        if (mTextBox.getText().length()>0) {
+            //TODO: FIX - Close cursor
+            //TODO: FIX - surround with try/catch
+            Cursor c = getContentResolver().query(
+                    getIntent().getData(),
+                    PROJECTION,
+                    ShoppingList.ITEM+"=?",
+                    new String[] {mTextBox.getText().toString()},
+                    null);
+            c.moveToFirst();
+            if (c == null
+                    || c.isBeforeFirst()
+                    || c.getInt(c.getColumnIndex(ShoppingList.STATUS))==ShoppingList.ON_LIST) {
+                ContentValues values = new ContentValues();
+                values.put(ShoppingList.ITEM, mTextBox.getText().toString());
+                getContentResolver().insert(ShoppingList.CONTENT_URI,values);
+            } else {
+                ContentValues values = new ContentValues();
+                values.put(ShoppingList.STATUS, ShoppingList.ON_LIST);
+                long id = c.getLong(c.getColumnIndex(ShoppingList._ID));
+                Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
+                assert uri != null;
+                getContentResolver().update(uri, values, null, null);
+            }
+            mTextBox.setText("");
+            updateList();
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -261,40 +295,6 @@ public class Trolly extends AppCompatActivity {
     			}
 	    });
 
-        Button btnAdd = (Button) findViewById(R.id.btn_add);
-        btnAdd.setOnClickListener(new Button.OnClickListener(){
-			@Override
-			public void onClick(View view) {
-				//If there is a string in the textbox then add it to the list
-				if (mTextBox.getText().length()>0) {
-                    //TODO: FIX - Close cursor
-                    //TODO: FIX - surround with try/catch
-                    Cursor c = getContentResolver().query(
-                            getIntent().getData(),
-							PROJECTION, 
-							ShoppingList.ITEM+"=?",
-							new String[] {mTextBox.getText().toString()},
-							null);
-					c.moveToFirst();
-					if (c == null
-                            || c.isBeforeFirst()
-							|| c.getInt(c.getColumnIndex(ShoppingList.STATUS))==ShoppingList.ON_LIST) {
-						ContentValues values = new ContentValues();
-						values.put(ShoppingList.ITEM, mTextBox.getText().toString());
-						getContentResolver().insert(ShoppingList.CONTENT_URI,values);
-					} else {
-						ContentValues values = new ContentValues();
-						values.put(ShoppingList.STATUS, ShoppingList.ON_LIST);
-						long id = c.getLong(c.getColumnIndex(ShoppingList._ID));
-						Uri uri = ContentUris.withAppendedId(getIntent().getData(), id);
-                        assert uri != null;
-                        getContentResolver().update(uri, values, null, null);
-					}
-	        		mTextBox.setText("");
-                    updateList();
-				}
-			}
-            });
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
     

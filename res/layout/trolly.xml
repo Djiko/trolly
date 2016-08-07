@@ -12,7 +12,8 @@
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
 		android:layout_alignParentEnd="true"
-        android:text="@string/add" />
+        android:text="@string/add"
+		android:onClick="addButtonClicked"/>
 
     <AutoCompleteTextView
         android:id="@+id/textbox"
