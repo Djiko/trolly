@@ -292,9 +292,6 @@ public class Trolly extends AppCompatActivity {
 					}
 	        		mTextBox.setText("");
                     updateList();
-				} else {
-					adding = !adding;
-					updateList();
 				}
 			}
             });
