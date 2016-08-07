@@ -29,7 +29,7 @@
     <string name="list_mode_sort_order_title">Tri en mode liste</string>
     <string name="list_mode_sort_order_summary">Ordre des articles en mode liste</string>
     <string name="list_mode_sort_order_dialog_title">Ordre du mode liste</string>
-    <string name="shopping_mode_sort_order_title">Shopping mode sort order</string>
+    <string name="shopping_mode_sort_order_title">Tri en mode shopping</string>
     <string name="shopping_mode_sort_order_summary">Ordre des articles en mode shopping</string>
     <string name="shopping_mode_sort_order_dialog_title">Ordre du mode shopping</string>
 
