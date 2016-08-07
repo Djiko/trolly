@@ -222,6 +222,7 @@ public class Trolly extends AppCompatActivity {
 
     private EditText mDialogEdit;
     private ListView lv;
+    private Cursor mCursor;
 
     /**
      * Add button listener. If the item edittext contains something, it will either add the item to the content provider or just update the list with an existing item.
@@ -302,22 +303,21 @@ public class Trolly extends AppCompatActivity {
         //set up the list cursor
         // TODO: Close cursor
         try {
-            Cursor cursor = getContentResolver()
-                    .query(
-                            getIntent().getData(),
-                            PROJECTION,
-                            adding ? null : ShoppingList.STATUS + "<>" + ShoppingList.OFF_LIST,
-                            null,
-                            ShoppingList.DEFAULT_SORT_ORDER
-                    );
+            mCursor = getContentResolver().query(
+                    getIntent().getData(),
+                    PROJECTION,
+                    adding ? null : ShoppingList.STATUS + "<>" + ShoppingList.OFF_LIST,
+                    null,
+                    ShoppingList.DEFAULT_SORT_ORDER
+            );
 
-                //set the list adapter
-                TrollyAdapter mAdapter = new TrollyAdapter(
-                        this,
-                        cursor,
-                        new String[]{ShoppingList.ITEM},
-                        new int[]{R.id.list_item});
-                lv.setAdapter(mAdapter);
+            TrollyAdapter mAdapter = new TrollyAdapter(
+                    this,
+                    mCursor,
+                    new String[]{ShoppingList.ITEM},
+                    new int[]{R.id.list_item}
+            );
+            lv.setAdapter(mAdapter);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -345,7 +345,7 @@ public class Trolly extends AppCompatActivity {
 	protected void onPause() {
 		super.onPause();
 		SharedPreferences.Editor ed = mPrefs.edit();
-        //TODO: IMP - move to apply()
+        mCursor.close();
         ed.apply();
 	}
 
