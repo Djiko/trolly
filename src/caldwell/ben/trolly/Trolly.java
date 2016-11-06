@@ -199,15 +199,11 @@ public class Trolly extends AppCompatActivity {
     
     // Menu item ids
     public static final int MENU_ITEM_DELETE = Menu.FIRST;
-    public static final int MENU_ITEM_CHECKOUT = Menu.FIRST + 2;
-    public static final int MENU_ITEM_PREFERENCE = Menu.FIRST + 3;
     public static final int MENU_ITEM_ON_LIST = Menu.FIRST + 4;
     public static final int MENU_ITEM_OFF_LIST = Menu.FIRST + 5;
     public static final int MENU_ITEM_IN_TROLLEY = Menu.FIRST + 6;
     public static final int MENU_ITEM_EDIT = Menu.FIRST + 7;
-    public static final int MENU_ITEM_CLEAR = Menu.FIRST + 8;
-    public static final int MENU_ITEM_RESET = Menu.FIRST + 9;
-    
+
     /**
      * Case selections for the type of dialog box displayed
      */
@@ -487,19 +483,6 @@ public class Trolly extends AppCompatActivity {
     	menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_item);
 	}
 
-	public boolean onCreateOptionsMenuOld(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.add(0, MENU_ITEM_CHECKOUT, 2, R.string.checkout)
-        .setIcon(android.R.drawable.ic_media_next);
-		menu.add(0, MENU_ITEM_CLEAR, 3, R.string.clear_list)
-        .setIcon(android.R.drawable.ic_menu_revert);
-		menu.add (0, MENU_ITEM_PREFERENCE, 4, R.string.preferences)
-        .setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(0, MENU_ITEM_RESET, 5, R.string.reset_list)
-        .setIcon(android.R.drawable.ic_menu_delete);
-		return true;
-	}
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -511,12 +494,12 @@ public class Trolly extends AppCompatActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
         //TODO: IMP - move to AlertDialog
 		switch (item.getItemId()) {
-            case MENU_ITEM_CHECKOUT:
+            case R.id.menu_item_checkout:
                 //Change all items from in trolley to off list
                 checkout();
                 updateList();
                 return true;
-            case MENU_ITEM_CLEAR:
+            case R.id.menu_item_clear:
                 //Change all items to off list
                 buildDialog(DIALOG_CLEAR,
                         android.R.drawable.ic_dialog_info,
@@ -524,9 +507,8 @@ public class Trolly extends AppCompatActivity {
                         getString(R.string.clear_prompt),
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
-                updateList();
                 return true;
-            case MENU_ITEM_RESET:
+            case R.id.menu_item_reset:
                 //Change all items to off list
                 buildDialog(DIALOG_RESET,
                         android.R.drawable.ic_dialog_info,
@@ -534,9 +516,8 @@ public class Trolly extends AppCompatActivity {
                         getString(R.string.reset_prompt),
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
-                updateList();
                 return true;
-            case MENU_ITEM_PREFERENCE:
+            case R.id.menu_item_preference:
                 startActivity(new Intent(this,TrollyPreferences.class));
                 return true;
         }
