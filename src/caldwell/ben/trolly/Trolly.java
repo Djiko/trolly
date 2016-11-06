@@ -233,7 +233,7 @@ public class Trolly extends AppCompatActivity {
             Cursor c = getContentResolver().query(
                     getIntent().getData(),
                     PROJECTION,
-                    ShoppingList.ITEM+"=?",
+                    ShoppingList.ITEM + "=?",
                     new String[] {mTextBox.getText().toString()},
                     null);
             c.moveToFirst();
@@ -296,8 +296,25 @@ public class Trolly extends AppCompatActivity {
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
-    
-	protected void updateList() {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adding = false;
+        updateList();
+
+        mCAutoFill = getContentResolver().query(
+                getIntent().getData(),
+                PROJECTION,
+                null,
+                null,
+                null);
+        AutoFillAdapter autoFillAdapter = new AutoFillAdapter(this, mCAutoFill);
+        mTextBox.setAdapter(autoFillAdapter);
+    }
+
+    protected void updateList() {
         //set up the list cursor
         // TODO: Close cursor
         try {
@@ -319,23 +336,6 @@ public class Trolly extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		
-		adding = false;
-		updateList();
-
-        mCAutoFill = getContentResolver().query(
-                getIntent().getData(),
-                PROJECTION,
-                null,
-                null,
-                null);
-		AutoFillAdapter autoFillAdapter = new AutoFillAdapter(this, mCAutoFill);
-		mTextBox.setAdapter(autoFillAdapter);
 	}
 
 	@Override
@@ -497,7 +497,6 @@ public class Trolly extends AppCompatActivity {
             case R.id.menu_item_checkout:
                 //Change all items from in trolley to off list
                 checkout();
-                updateList();
                 return true;
             case R.id.menu_item_clear:
                 //Change all items to off list
@@ -601,6 +600,7 @@ public class Trolly extends AppCompatActivity {
     		}
 	    	c.moveToNext();
     	}
+        updateList();
     }
     
     /**
