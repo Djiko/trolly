@@ -507,6 +507,7 @@ public class Trolly extends AppCompatActivity {
             case MENU_ITEM_CHECKOUT:
                 //Change all items from in trolley to off list
                 checkout();
+                updateList();
                 return true;
             case MENU_ITEM_CLEAR:
                 //Change all items to off list
@@ -516,6 +517,7 @@ public class Trolly extends AppCompatActivity {
                         getString(R.string.clear_prompt),
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
+                updateList();
                 return true;
             case MENU_ITEM_RESET:
                 //Change all items to off list
@@ -525,6 +527,7 @@ public class Trolly extends AppCompatActivity {
                         getString(R.string.reset_prompt),
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
+                updateList();
                 return true;
             case MENU_ITEM_PREFERENCE:
                 startActivity(new Intent(this,TrollyPreferences.class));
@@ -546,23 +549,19 @@ public class Trolly extends AppCompatActivity {
                     switch (dialog) {
                         case (DIALOG_CLEAR):
                             // Clears the list
-                            Log.i("Button clicked", "Ok CLEAR button");
                             values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
                             getContentResolver().update(getIntent().getData(), values, null, null);
                             break;
                         case (DIALOG_RESET):
                             // Resets the list
-                            Log.i("Button clicked", "Ok RESET button");
                             getContentResolver().delete(getIntent().getData(), null, null);
                             break;
                         case (DIALOG_DELETE):
                             // Delete an item from the list
-                            Log.i("Button clicked", "Ok DELETE button");
                             getContentResolver().delete(mUri, null, null);
                             break;
                         case (DIALOG_EDIT):
                             // Edit an item in the list
-                            Log.i("Button clicked", "Ok EDIT button");
                             // mDialogEdit = (EditText) findViewById(R.id.dialog_confirm_prompt);
                             values.put(ShoppingList.ITEM, mDialogEdit.getText().toString());
                             getContentResolver().update(mUri, values, null, null);

@@ -24,7 +24,7 @@
     <string name="clear_list">Effacer la liste</string>
     <string name="clear_prompt">Effacer tous les articles de la liste ?</string>
     <string name="reset_list">Réinitialiser la liste</string>
-    <string name="reset_prompt">Supprimer définitivement tous les articles de la liste ?</string>
+    <string name="reset_prompt">Vider totalement la liste ?</string>
 
     <string name="list_mode_sort_order_title">Tri en mode liste</string>
     <string name="list_mode_sort_order_summary">Ordre des articles en mode liste</string>
