@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -486,8 +487,7 @@ public class Trolly extends AppCompatActivity {
     	menu.add(0, MENU_ITEM_DELETE, 0, R.string.delete_item);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenuOld(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 		menu.add(0, MENU_ITEM_CHECKOUT, 2, R.string.checkout)
         .setIcon(android.R.drawable.ic_media_next);
@@ -499,6 +499,13 @@ public class Trolly extends AppCompatActivity {
         .setIcon(android.R.drawable.ic_menu_delete);
 		return true;
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
