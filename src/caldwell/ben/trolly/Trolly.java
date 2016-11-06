@@ -210,7 +210,6 @@ public class Trolly extends AppCompatActivity {
     private static final int DIALOG_DELETE = 1;
     private static final int DIALOG_EDIT = 2;
     private static final int DIALOG_CLEAR = 3;
-    private static final int DIALOG_RESET = 4;
 
     private AutoCompleteTextView mTextBox;
     private SharedPreferences mPrefs;
@@ -507,15 +506,6 @@ public class Trolly extends AppCompatActivity {
                         R.string.dialog_ok,
                         R.string.dialog_cancel);
                 return true;
-            case R.id.menu_item_reset:
-                //Change all items to off list
-                buildDialog(DIALOG_RESET,
-                        android.R.drawable.ic_dialog_info,
-                        R.string.reset_list,
-                        getString(R.string.reset_prompt),
-                        R.string.dialog_ok,
-                        R.string.dialog_cancel);
-                return true;
             case R.id.menu_item_preference:
                 startActivity(new Intent(this,TrollyPreferences.class));
                 return true;
@@ -532,24 +522,15 @@ public class Trolly extends AppCompatActivity {
             .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    ContentValues values = new ContentValues();
                     switch (dialog) {
                         case (DIALOG_CLEAR):
                             // Clears the list
-                            values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
-                            getContentResolver().update(getIntent().getData(), values, null, null);
-                            break;
-                        case (DIALOG_RESET):
-                            // Resets the list
-                            getContentResolver().delete(getIntent().getData(), null, null);
-                            break;
-                        case (DIALOG_DELETE):
-                            // Delete an item from the list
-                            getContentResolver().delete(mUri, null, null);
+                            clear_list();
                             break;
                         case (DIALOG_EDIT):
                             // Edit an item in the list
                             // mDialogEdit = (EditText) findViewById(R.id.dialog_confirm_prompt);
+                            ContentValues values = new ContentValues();
                             values.put(ShoppingList.ITEM, mDialogEdit.getText().toString());
                             getContentResolver().update(mUri, values, null, null);
                             break;
@@ -568,6 +549,10 @@ public class Trolly extends AppCompatActivity {
 	 * Change all items marked as "in trolley" to "off list"
 	 */
     private void checkout() {
+        Uri uri;
+        int status;
+        long id;
+
         Cursor c = getContentResolver().query(
                 getIntent().getData(),
                 PROJECTION,
@@ -578,9 +563,6 @@ public class Trolly extends AppCompatActivity {
     	c.moveToFirst();
     	ContentValues values = new ContentValues();
     	values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
-    	Uri uri;
-    	int status;
-    	long id;
     	//loop through all items in the list
     	while (!c.isAfterLast()) {
     		status = c.getInt(c.getColumnIndex(ShoppingList.STATUS));
@@ -600,6 +582,13 @@ public class Trolly extends AppCompatActivity {
     		}
 	    	c.moveToNext();
     	}
+        updateList();
+    }
+
+    private void clear_list() {
+        ContentValues values = new ContentValues();
+        values.put(ShoppingList.STATUS, ShoppingList.OFF_LIST);
+        getContentResolver().update(getIntent().getData(), values, null, null);
         updateList();
     }
     
